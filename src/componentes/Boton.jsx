@@ -11,6 +11,8 @@ function Boton(props) {
       className={`boton-contenedor ${
         esOperador(props.children) ? "operador" : ""
       }`.trimEnd()}
+      //Cuando hacemos click llamamos una función flecha anonima
+      onClick={() => props.manejarClick(props.children)}
     >
       {props.children}
     </div>
