@@ -5,6 +5,7 @@ import Pantalla from "./componentes/Pantalla.jsx";
 import BotonClear from "./componentes/BotonClear.jsx";
 import { useState } from "react";
 import { evaluate } from "mathjs";
+import Swal from "sweetalert2";
 
 function App() {
   // Estado del conponente
@@ -14,9 +15,43 @@ function App() {
   const agregarInput = (val) => {
     setInput(input + val);
   };
-  // función para calcular el resultado
+  // // función para calcular el resultado
+  // const calcularResultado = () => {
+  //   //Condicional
+  //   if (input) {
+  //     setInput(evaluate(input));
+  //   } else {
+  //     Swal.fire({
+  //       icon: "warning",
+  //       title: "Campo vacio",
+  //       text: "Por favor, ingrese valores para realizar los calculos",
+  //     });
+  //     // alert("Por favor ingrese valores para realizar los calculos");
+  //   }
+  // };
   const calcularResultado = () => {
-    setInput(evaluate(input));
+    if (!input.trim()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Entrada vacía",
+        text: "Por favor, ingresa una operación matemática antes de calcular.",
+      });
+      return;
+    }
+    try {
+      const resultado = evaluate(input);
+      if (!isFinite(resultado)) {
+        throw new Error("Resultado inválido");
+      }
+      setInput(String(resultado));
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error en la operación",
+        text: "Revisa la expresión matemática ingresada.",
+      });
+      setInput("");
+    }
   };
 
   return (
